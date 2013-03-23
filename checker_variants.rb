@@ -1,4 +1,4 @@
-module CheckerVariants
+class CheckerVariants
 
 	ENGLISH_AND_AMERICAN = {
 		:board_size => 8, 
@@ -17,7 +17,31 @@ module CheckerVariants
 			:long_range_kings => true,
 			:men_backwards_capture => true,
 			:compulsory_capture => true
-			},
+		},
+		:canadian => { 
+			:board_size => 12, 
+			:pieces_per_side => 30, 
+			:first_move_color => :white,
+			:long_range_kings => true,
+			:men_backwards_capture => true,
+			:compulsory_capture => true
+		},
+		:spanish => { 
+			:board_size => 8, 
+			:pieces_per_side => 12, 
+			:first_move_color => :white,
+			:long_range_kings => true,
+			:men_backwards_capture => false,
+			:compulsory_capture => true
+		},
+		:italian => {
+			:board_size => 8, 
+			:pieces_per_side => 12, 
+			:first_move_color => :white,
+			:long_range_kings => false,
+			:men_backwards_capture => false,
+			:compulsory_capture => true
+		},
 		:english => ENGLISH_AND_AMERICAN,
 		:american => ENGLISH_AND_AMERICAN
 	}

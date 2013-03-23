@@ -29,7 +29,8 @@ class Piece
 	end
 
 	def valid_jump_move?(board, from, to)
-		if is_jump_move?(from, to) && board[to].nil? && (backwards_capture || is_right_direction?(from, to))
+		if is_jump_move?(from, to) && board[to].nil? && 
+			(backwards_capture || is_right_direction?(from, to))
 			pieces_between = pieces_between(board, from, to)
 			pieces_between.length == 1 && pieces_between.first.color != self.color
   		else
@@ -67,7 +68,7 @@ class King < Piece
 
 	def is_jump_move?(from, to)
 		if @@long_range
-  			(from[0] - to[0]).abs == (from[1] - to[1]).abs
+  			(from[0] - to[0]).abs == (from[1] - to[1]).abs && (from[1] - to[1]).abs > 1
   		else
   			super(from, to)
   		end
