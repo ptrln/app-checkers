@@ -9,18 +9,18 @@ class CheckersGame
 		rules = CheckerVariants.rules_for_variant(variant)
 		raise "Variant #{variant} is not supported" if rules.nil?
 
-		board, player_now, player_next = setup(rules, player1, player2)
+		board, current_p, next_p = setup(rules, player1, player2)
 		chain = nil
-		until board.game_over? || board.no_more_moves?(player_now.color)
-			from, to = get_player_move(board.dup, player_now, chain)
+		until board.game_over? || board.no_more_moves?(current_p.color)
+			from, to = get_player_move(board.dup, current_p, chain)
 			begin
-				chain = board.make_move(player_now.color, from, to)
-				player_now, player_next = player_next, player_now unless chain
+				chain = board.make_move(current_p.color, from, to)
+				current_p, next_p = next_p, current_p unless chain
 			rescue InvalidMoveError
-				player_now.invalid_move(from, to)
+				current_p.invalid_move(from, to)
 			end
 		end
-		player_next.game_over(board)
+		next_p.game_over(board)
 	end
 
 	def self.get_player_move(board, player, moving_coord)
@@ -41,4 +41,4 @@ class CheckersGame
 
 end
 
-CheckersGame.run(ComputerPlayer.new, ComputerPlayer.new)
+CheckersGame.run(AdvancedComputerPlayer.new, ComputerPlayer.new)

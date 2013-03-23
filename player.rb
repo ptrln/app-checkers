@@ -76,7 +76,8 @@ class ComputerPlayer < Player
 	def additional_move(board, coord)
 		board.pretty_print
 		all_pos = board.all_possible_moves(self.color)
-		take_move(board, {coord => all_pos[coord]}).last || random_move(all_pos, coord).last
+		take_move(board, {coord => all_pos[coord]}).last || 
+			random_move(all_pos, coord).last
 	end
 
 	def invalid_move(from, to)
@@ -89,8 +90,35 @@ class AdvancedComputerPlayer < ComputerPlayer
 	def move(board)
 		board.pretty_print
 		all_pos = board.all_possible_moves(self.color)
-		
-		take_move(board, all_pos) || king_move(board, all_pos) || avoidance_move(board, all_pos) || random_move(all_pos)
+		take_move(board, all_pos) || king_move(board, all_pos) || 
+			avoidance_move(board, all_pos) || random_move(all_pos)
+	end
+
+=begin #not working yet
+	DIAGONAL_OFFSETS = [[1, -1], [1, 1], [-1, -1], [-1, 1]]
+
+	def trim_bad_moves(board, all_pos)
+		return {}
+		safe_moves = {}
+		all_pos.each do |from, possible_tos|	#only looks at the immediate diagonal blocks
+			safe_tos = []
+			possible_tos.each do |to|
+				DIAGONAL_OFFSETS.each do |offset|
+					check = merge_offset(to, offset)
+					if board[check] && board[check].color != self.color
+						back = merge_offset(to, offset.map { |o| o * -1 })
+						next if board[back].nil?
+					end
+					safe_tos << to
+				end
+			end
+			safe_moves[from] = safe_tos unless safe_tos.empty?
+		end
+		safe_moves
+	end
+=end
+	def merge_offset(coord, offset)
+		coord.zip(offset).map { |arr| arr.inject(&:+) }
 	end
 
 	def avoidance_move(board, all_pos)	#this move avoids our piece from being taken
